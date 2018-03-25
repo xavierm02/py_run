@@ -41,7 +41,7 @@ def run(cmd, cmd_str=None, error_fatal=True):
 	if cmd_str == None:
 		cmd_str = cmd
 	term.saveCursor()
-	print("         " + command(cmd_str), end="")
+	print(" [ ? ]   " + command(cmd_str), flush=True)
 	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 	output, error_output = process.communicate()
 	output = output.decode("ascii")
@@ -51,18 +51,19 @@ def run(cmd, cmd_str=None, error_fatal=True):
 		raise "Undefined return code after execution!"
 	elif process.returncode == 0:
 		term.restoreCursor()
-		print(ok(" [OK]") + "   ")
-		eprint(error_output, end="")
+		print(ok(" [OK]") + "   ", flush=True)
+		eprint(error_output, end="", flush=True)
 		return output
 	else:
 		term.restoreCursor()
 		if error_fatal:
-			print(error(" [ERROR]") + " " + command(cmd_str) + " -> " + error(process.returncode))
-			eprint(error(error_output), end="")
+			print(error(" [ERROR]") + " " + command(cmd_str) + " -> " + error(process.returncode), flush=True)
+			eprint(error(error_output), end="", flush=True)
 			raise(RunError(cmd, cmd_str, process, output, error_output))
 		else:
-			print(warning(" [WARN]") + "  " + command(cmd_str) + " -> " + error(process.returncode))
-			eprint(warning(error_output), end="")
+			print(warning(" [WARN]") + "  " + command(cmd_str) + " -> " + error(process.returncode), flush=True)
+			eprint(warning(error_output), end="", flush=True)
+			return None
 
 def test():
 	run("ls")
