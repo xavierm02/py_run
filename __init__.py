@@ -51,11 +51,13 @@ def run(cmd, cmd_str=None, error_fatal=True):
 		raise "Undefined return code after execution!"
 	elif process.returncode == 0:
 		term.restoreCursor()
+		term.up()
 		print(ok(" [OK]") + "   ", flush=True)
 		eprint(error_output, end="", flush=True)
 		return output
 	else:
 		term.restoreCursor()
+		term.up()
 		if error_fatal:
 			print(error(" [ERROR]") + " " + command(cmd_str) + " -> " + error(process.returncode), flush=True)
 			eprint(error(error_output), end="", flush=True)
